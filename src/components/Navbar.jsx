@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useBudget } from '../contexts/BudgetContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js'
+import { useEffect } from "react";
 
 
 function NavBar({ onSearch }) {
@@ -16,7 +17,7 @@ function NavBar({ onSearch }) {
     return (
         <nav className="navbar navbar-expand-lg fw-bold bg-warning mb-4">
             <div className="container-fluid">
-                <button type="button" className="btn btn-outline-dark" onClick={setBudgetMode}>{budget ? 'Disattiva Modalità Budget' : 'Attiva Modalità Budget'}</button>
+                {/* <button type="button" className="btn btn-outline-dark" onClick={setBudgetMode}>{budget ? 'Disattiva Modalità Budget' : 'Attiva Modalità Budget'}</button> */}
                 {/* <NavLink className="navbar-brand" to="/">Logo</NavLink> */}
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -34,7 +35,8 @@ function NavBar({ onSearch }) {
                         </li>
                     </ul>
                     <form className="d-flex" role="search">
-                        <input className="form-control me-2" type="search" onChange={(e) => onSearch(e.target.value)} placeholder="Search" aria-label="Search" />
+                        <input className="form-control me-2" type="number" onChange={(e) => setBudget(e.target.value === '' ? null : parseInt(e.target.value))} placeholder="Max Price" aria-label="MaxPrice" />
+                        <input className="form-control me-2" type="search" onChange={(e) => onSearch(e.target.value)} placeholder="Search Products" aria-label="Search" />
                     </form>
                 </div>
             </div>

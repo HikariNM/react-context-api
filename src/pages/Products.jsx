@@ -31,9 +31,11 @@ function Products({ searchTerm = '' }) {
 
     useEffect(getData, [])
 
-    const [budget] = useBudget();
+    const [budget, setBudget] = useBudget();
 
-    // Updates the displayed product list whenever search terms, budget mode, or data change
+    /*******************BONUS********************************** */
+
+    // Updates the displayed product list whenever search terms, max price filter, or data change
     useEffect(() => {
         // Start with the full list of products
         let filtered = [...products];
@@ -43,14 +45,38 @@ function Products({ searchTerm = '' }) {
             filtered = filtered.filter(product =>
                 product.title.toLowerCase().includes(searchTerm.toLowerCase()))
 
-            // Apply price filter if budget mode is enabled
-        } if (budget) {
-            filtered = filtered.filter(product => product.price <= 30)
+            // Filter products by maximum price if a limit is set
+        } if (budget !== null && budget !== '') {
+            filtered = filtered.filter(product => product.price <= budget)
         }
 
         // Finalize the filtered results
         setSearchedProducts(filtered)
     }, [searchTerm, budget, products]) // Re-run the effect when any of these dependencies update
+
+
+    /***************************MILESTONE 3************************************/
+
+    // Updates the displayed product list whenever search terms, budget mode, or data change
+    // useEffect(() => {
+    //     // Start with the full list of products
+    //     let filtered = [...products];
+
+    //     // Apply text search filter if a search term exists
+    //     if (searchTerm !== '') {
+    //         filtered = filtered.filter(product =>
+    //             product.title.toLowerCase().includes(searchTerm.toLowerCase()))
+
+    //         // Apply price filter if budget mode is enabled
+    //     } if (budget) {
+    //         filtered = filtered.filter(product => product.price <= 30)
+    //     }
+
+    //     // Finalize the filtered results
+    //     setSearchedProducts(filtered)
+    // }, [searchTerm, budget, products]) // Re-run the effect when any of these dependencies update
+
+
 
 
     // // Filters products whenever searchTerm changes
