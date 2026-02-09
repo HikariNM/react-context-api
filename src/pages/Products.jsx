@@ -31,24 +31,42 @@ function Products({ searchTerm = '' }) {
 
     useEffect(getData, [])
 
-    // Filters products whenever searchTerm changes
+    const [budget] = useBudget();
+
+    // Updates the displayed product list whenever search terms, budget mode, or data change
     useEffect(() => {
-        // If there is no search term, show all products
-        if (searchTerm === '') {
-            setSearchedProducts(products)
-        } else {
-            // Filters products whose title contains what is being searched
-            const searched = products.filter(product =>
-                product.title.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-            setSearchedProducts(searched)
-            console.log('Searched data:', searchedProducts)
+        // Start with the full list of products
+        let filtered = [...products];
+
+        // Apply text search filter if a search term exists
+        if (searchTerm !== '') {
+            filtered = filtered.filter(product =>
+                product.title.toLowerCase().includes(searchTerm.toLowerCase()))
+
+            // Apply price filter if budget mode is enabled
+        } if (budget) {
+            filtered = filtered.filter(product => product.price <= 30)
         }
-    }, [searchTerm, products]) // This useEffect runs every time searchTerm changes
+
+        // Finalize the filtered results
+        setSearchedProducts(filtered)
+    }, [searchTerm, budget, products]) // Re-run the effect when any of these dependencies update
 
 
-    // const { budget, setBudget } = useBudget();
-
+    // // Filters products whenever searchTerm changes
+    // useEffect(() => {
+    //     // If there is no search term, show all products
+    //     if (searchTerm === '') {
+    //         setSearchedProducts(products)
+    //     } else {
+    //         // Filters products whose title contains what is being searched
+    //         const searched = products.filter(product =>
+    //             product.title.toLowerCase().includes(searchTerm.toLowerCase())
+    //         )
+    //         setSearchedProducts(searched)
+    //         console.log('Searched data:', searchedProducts)
+    //     }
+    // }, [searchTerm, products]) // This useEffect runs every time searchTerm changes
 
 
     if (loading) {
