@@ -1,35 +1,31 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BudgetProvider } from './contexts/BudgetContext'
+import HomePage from './pages/HomePage'
+import AboutUs from './pages/AboutUs'
+import Products from './pages/Products'
+import ProductDetailsPage from './pages/ProductDetailsPage'
+import DefaultLayout from './layout/DefaultLayout'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  const [searchTerm, setSearchTerm] = useState('');
+
+  return <BudgetProvider>
+    <BrowserRouter>
+      <Routes>
+        {/* Passes setSearchTerm to DefaultLayout as the "onSearch" prop */}
+        <Route element={<DefaultLayout onSearch={setSearchTerm} />}>
+          <Route path='/' Component={HomePage} />
+          <Route path='/aboutus' Component={AboutUs} />
+          {/* Passes searchTerm to Products as a prop */}
+          <Route path='/products' element={<Products searchTerm={searchTerm} />} />
+          <Route path='/products/:id' Component={ProductDetailsPage} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  </BudgetProvider>
 }
 
 export default App
